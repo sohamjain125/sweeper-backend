@@ -1,19 +1,4 @@
-# Authentication System
-
-A robust authentication system built with Node.js, Express, and TypeScript, featuring separate authentication flows for users and administrators.
-
-## Features
-
-- 🔐 Dual Authentication System (User & Admin)
-- 🔒 JWT-based Authentication
-- 🔑 Access & Refresh Token Support
-- 📱 Phone Number Validation
-- ✉️ Email Validation
-- 🔍 Input Validation using Joi
-- 🛡️ Password Hashing with bcrypt
-- 📝 Comprehensive Error Handling
-- 🏗️ Clean Architecture Pattern
-
+# Sweeper Backend
 ## Tech Stack
 
 - Node.js
