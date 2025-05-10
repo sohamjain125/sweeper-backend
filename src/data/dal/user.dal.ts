@@ -11,6 +11,10 @@ export class UserDAL {
         return await User.findOne({ email });
     }
 
+    static async findByPhoneNum(phoneNumber: string): Promise<IUser | null> {
+        return await User.findOne({ phoneNumber });
+    }
+
     static async findById(id: string): Promise<IUser | null> {
         return await User.findById(id);
     }

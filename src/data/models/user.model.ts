@@ -1,13 +1,15 @@
 import { Schema, model } from 'mongoose';
 import { IUser } from '../../core/interfaces/user.interface';
+import {generateAccessToken} from '../../core/utils/jwt.util'
+import {compareHash} from '../../core/utils/hash.util'
 
 const userSchema = new Schema<IUser>({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    username: { type: String, required: true },
     password: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
     profile: { type: String },
+    phoneNumber: { type: String, required: true },
+    address:[{type:String}],
+    usertype:{type:String, enum: ['Admin', 'User'], default:'User'}
 }, {
     timestamps: true
 });
@@ -15,11 +17,14 @@ const userSchema = new Schema<IUser>({
 // Compound index for firstName and lastName for name-based searches
 userSchema.index({ firstName: 1, lastName: 1 });
 
-// Text index for full-text search capabilities
-userSchema.index({ 
-    firstName: 'text', 
-    lastName: 'text', 
-    email: 'text' 
-});
+userSchema.methods.checkPassword= function (password:string)
+{
+    return compareHash(password, this.password)
+}
+
+userSchema.methods.generateToken = function (this: IUser) {
+    return generateAccessToken(this);
+};
+
 
 export const User = model<IUser>('User', userSchema); 
