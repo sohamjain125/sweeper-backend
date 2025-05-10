@@ -37,10 +37,3 @@ export const getErrorCode = (e: unknown): number | undefined => {
   }
   return (HttpStatusCodes as Record<string, number>)[code] || 400;
 };
-export const getFirebaseErrorCode = (e: unknown): string => {
-  let code: string | undefined;
-  if (e instanceof Error) {
-    code = e.code; // works, `e` narrowed to Error
-  }
-  return code || "INVALID_REQ_TYPE";
-};

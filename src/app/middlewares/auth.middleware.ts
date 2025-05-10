@@ -5,13 +5,10 @@ import { HttpStatusCodes, ResponseMessages } from '../../core/constants/cloud.co
 import { responseHandler } from '../../core/handlers/response.handler';
 import { CustomError, getErrorCode, getErrorMessage } from '../../core/handlers/error.handlers';
 import errorHandlerMiddleware from '../../core/handlers/mongooseError.handler';
+import {decodeUserToken} from '../../core/utils/jwt.util'
+import { AuthenticatedRequest } from 'src/core/interfaces/authenticatedRequest.interfaces';
 
-export interface AuthRequest extends Request {
-    user?: any;
-    admin?: any;
-}
-
-export const userAuthMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const userAuthMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
         
@@ -22,8 +19,9 @@ export const userAuthMiddleware = async (req: AuthRequest, res: Response, next: 
             );
         }
 
-        const decoded = jwt.verify(token, config.JWT_SECRET as string);
-        req.user = decoded;
+        const decoded = decodeUserToken(token);
+        req.userId = decoded.id as string;
+        req.role=decoded.role as string;
         next();
     } catch (error) {
         const errorMongoose = errorHandlerMiddleware(error, res);
@@ -39,19 +37,29 @@ export const userAuthMiddleware = async (req: AuthRequest, res: Response, next: 
     }
 };
 
-export const adminAuthMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const adminAuthMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
         
         if (!token) {
             throw new CustomError(
-                ResponseMessages.RES_MSG_UNAUTHORIZED_ADMIN_EN,
+                ResponseMessages.RES_MSG_INVALID_TOKEN_EN,
                 'UNAUTHORIZED'
             );
         }
 
-        const decoded = jwt.verify(token, config.JWT_SECRET as string);
-        req.admin = decoded;
+        const decoded = decodeUserToken(token);
+        req.userId = decoded.id as string;
+        req.role=decoded.role as string;
+
+        if(req.role==='User')
+        {
+            throw new CustomError(
+                ResponseMessages.RES_MSG_ACCESS_DENIED_EN,
+                'UNAUTHORIZED'
+            );
+        }
+
         next();
     } catch (error) {
         const errorMongoose = errorHandlerMiddleware(error, res);
@@ -65,4 +73,5 @@ export const adminAuthMiddleware = async (req: AuthRequest, res: Response, next:
             return responseHandler(res, null, code, message);
         }
     }
-}; 
+};
+

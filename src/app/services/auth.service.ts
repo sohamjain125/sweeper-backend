@@ -1,13 +1,13 @@
 import { IUser } from '../../core/interfaces/user.interface';
-import { IAdmin } from '../../core/interfaces/admin.interface';
 import { UserDAL } from '../../data/dal/user.dal';
 import { AdminDAL } from '../../data/dal/admin.dal';
-import { generateHash, compareHash, generateAccessToken, generateRefreshToken } from '../../core/utils/util';
+import { generateHash, compareHash } from '../../core/utils/hash.util';
+import{generateAccessToken} from '../../core/utils/jwt.util'
 import { ResponseMessages } from '../../core/constants/cloud.constants';
 import { CustomError } from '../../core/handlers/error.handlers';
 
 export const registerUser = async (userData: IUser): Promise<IUser> => {
-    const existingUser = await UserDAL.findByEmail(userData.email);
+    const existingUser = await UserDAL.findByPhoneNum(userData.phoneNumber);
     if (existingUser) {
         throw new CustomError(
             ResponseMessages.RES_MSG_USER_EMAIL_ALREADY_EXISTS_EN,
@@ -24,7 +24,7 @@ export const registerUser = async (userData: IUser): Promise<IUser> => {
     return user;
 };
 
-export const loginUser = async (email: string, password: string): Promise<{ accessToken: string; refreshToken: string; user: IUser }> => {
+export const loginUser = async (email: string, password: string): Promise<{ accessToken: string; user: IUser }> => {
     const user = await UserDAL.findByEmail(email);
     if (!user) {
         throw new CustomError(
@@ -42,30 +42,13 @@ export const loginUser = async (email: string, password: string): Promise<{ acce
     }
 
     const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
 
-    return { accessToken, refreshToken, user };
+    return { accessToken, user };
 };
 
-export const registerAdmin = async (adminData: IAdmin): Promise<IAdmin> => {
-    const existingAdmin = await AdminDAL.findByEmail(adminData.email);
-    if (existingAdmin) {
-        throw new CustomError(
-            ResponseMessages.RES_MSG_ADMIN_EMAIL_ALREADY_EXISTS_EN,
-            'CONFLICT'
-        );
-    }
 
-    const hashedPassword = await generateHash(adminData.password);
-    const admin = await AdminDAL.create({
-        ...adminData,
-        password: hashedPassword
-    });
 
-    return admin;
-};
-
-export const loginAdmin = async (email: string, password: string): Promise<{ accessToken: string; refreshToken: string; admin: IAdmin }> => {
+export const loginAdmin = async (email: string, password: string): Promise<{ accessToken: string;  admin: IUser }> => {
     const admin = await AdminDAL.findByEmail(email);
     if (!admin) {
         throw new CustomError(
@@ -83,7 +66,6 @@ export const loginAdmin = async (email: string, password: string): Promise<{ acc
     }
 
     const accessToken = generateAccessToken(admin);
-    const refreshToken = generateRefreshToken(admin);
 
-    return { accessToken, refreshToken, admin };
+    return { accessToken, admin };
 }; 

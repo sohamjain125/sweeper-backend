@@ -1,11 +1,11 @@
 export interface IUser {
-    id?: string;
-    firstName: string;
-    lastName: string;
-    email: string;
+    userId: string;
+    username: string;
     password: string;
     profile?: string;
     phoneNumber: string;
+    address: string[];
+    usertype: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -16,3 +16,9 @@ export interface IUserResponse {
     data?: IUser;
     error?: string;
 } 
+
+export interface IAuthenticatedUser
+{
+    id: string, 
+    role: string
+}

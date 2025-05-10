@@ -89,6 +89,7 @@ export const HttpStatusCodes = Object.freeze({
       "Sorry, something went wrong, we are working to solve the issue as soon as possible.",
     RES_MSG_INVITATION_LINK_EN: "Invitation link has been shared successfully !!",
     RES_MSG_INVALID_TOKEN_EN: "Your session is expired, please login.",
+    RES_MSG_ACCESS_DENIED_EN: "Access Denied",
     RES_MSG_INVALID_HASH_EN: "Hash is not correct",
     RES_MSG_HEALTH_CHECK: "Your backend is running very well.",
   

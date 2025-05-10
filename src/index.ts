@@ -10,6 +10,6 @@ const server = createServer(app);
 
 // Start the server
 server.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
   connectToDatabase();
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
