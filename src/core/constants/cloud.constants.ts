@@ -206,5 +206,11 @@ export const HttpStatusCodes = Object.freeze({
     NOT_EXTENDED: "NOT_EXTENDED",
     NETWORK_AUTHENTICATION_REQUIRED: "NETWORK_AUTHENTICATION_REQUIRED",
   
-  
+    // Admin Messages
+    RES_MSG_ADMIN_CREATED_SUCCESSFULLY_EN: 'Admin created successfully',
+    RES_MSG_ADMIN_LOGIN_SUCCESSFULLY_EN: 'Admin login successfully',
+    RES_MSG_ADMIN_NOT_FOUND_EN: 'Admin not found',
+    RES_MSG_ADMIN_EMAIL_ALREADY_EXISTS_EN: 'Admin email already exists',
+    RES_MSG_ADMIN_INVALID_PASSWORD: 'Invalid admin password',
+    RES_MSG_ADMIN_UNAUTHORIZED: 'Admin access required'
   });

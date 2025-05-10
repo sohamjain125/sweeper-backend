@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { ResponseBodyInterface } from "../interface/response.interface";
+import { ResponseBodyInterface } from "../interfaces/response.interface";
 
 export const responseHandler = (
   res: Response,
