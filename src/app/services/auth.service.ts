@@ -1,16 +1,16 @@
 import { IUser } from '../../core/interfaces/user.interface';
 import { UserDAL } from '../../data/dal/user.dal';
-import { AdminDAL } from '../../data/dal/admin.dal';
 import { generateHash, compareHash } from '../../core/utils/hash.util';
 import{generateAccessToken} from '../../core/utils/jwt.util'
 import { ResponseMessages } from '../../core/constants/cloud.constants';
 import { CustomError } from '../../core/handlers/error.handlers';
 
+
 export const registerUser = async (userData: IUser): Promise<IUser> => {
     const existingUser = await UserDAL.findByPhoneNum(userData.phoneNumber);
     if (existingUser) {
         throw new CustomError(
-            ResponseMessages.RES_MSG_USER_EMAIL_ALREADY_EXISTS_EN,
+            ResponseMessages.RES_MSG_USER_PHONE_ALREADY_EXISTS_EN,
             'CONFLICT'
         );
     }
@@ -24,8 +24,8 @@ export const registerUser = async (userData: IUser): Promise<IUser> => {
     return user;
 };
 
-export const loginUser = async (email: string, password: string): Promise<{ accessToken: string; user: IUser }> => {
-    const user = await UserDAL.findByEmail(email);
+export const loginUser = async (username: string, password: string): Promise<{ accessToken: string; user: IUser }> => {
+    const user = await UserDAL.findByUsername(username);
     if (!user) {
         throw new CustomError(
             ResponseMessages.RES_MSG_USER_NOT_FOUND_EN,
@@ -48,8 +48,8 @@ export const loginUser = async (email: string, password: string): Promise<{ acce
 
 
 
-export const loginAdmin = async (email: string, password: string): Promise<{ accessToken: string;  admin: IUser }> => {
-    const admin = await AdminDAL.findByEmail(email);
+export const loginAdmin = async (username: string, password: string): Promise<{ accessToken: string;  admin: IUser }> => {
+    const admin = await UserDAL.findByUsername(username);
     if (!admin) {
         throw new CustomError(
             ResponseMessages.RES_MSG_ADMIN_NOT_FOUND_EN,

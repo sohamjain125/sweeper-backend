@@ -4,7 +4,7 @@ export interface IUser {
     password: string;
     profile?: string;
     phoneNumber: string;
-    address: string[];
+    address?: string[];
     usertype: string;
     createdAt?: Date;
     updatedAt?: Date;

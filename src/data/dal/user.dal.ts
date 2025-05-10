@@ -26,5 +26,8 @@ export class UserDAL {
     static async delete(id: string): Promise<IUser | null> {
         return await User.findByIdAndDelete(id);
     }
+    static async findByUsername(username: string): Promise<IUser | null> {
+        return await User.findOne({ username });
+    }
 }
 

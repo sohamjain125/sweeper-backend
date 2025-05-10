@@ -111,7 +111,7 @@ export const HttpStatusCodes = Object.freeze({
   
     RES_MSG_USER_LOGIN_SUCCESSFULLY_EN: "User login successfully.",
   
-    RES_MSG_USER_EMAIL_ALREADY_EXISTS_EN: "User email is already exists.",
+    RES_MSG_USER_PHONE_ALREADY_EXISTS_EN: "User phone number is already exists.",
   
     RES_MSG_USER_NUMBER_ALREADY_EXISTS_EN: "User phone number is already exists.",
   

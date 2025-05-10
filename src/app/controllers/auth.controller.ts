@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import { registerUser, loginUser, loginAdmin } from '../services/auth.service';
 import { responseHandler } from '../../core/handlers/response.handler';
 import { HttpStatusCodes, ResponseMessages } from '../../core/constants/cloud.constants';
-import errorHandlerMiddleware from '../../core/handlers/mongooseError.handler';
-import { getErrorCode, getErrorMessage } from '../../core/handlers/error.handlers';
-import { asyncHandler } from 'src/core/utils/asyncHandler.util';
+import { asyncHandler } from '../../core/utils/asyncHandler.util';
 
 export const registerUserController = asyncHandler(async (req: Request, res: Response) => {
         const user = await registerUser(req.body);
